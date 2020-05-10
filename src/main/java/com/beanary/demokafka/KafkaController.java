@@ -18,7 +18,7 @@ public class KafkaController {
 	
 	@PostMapping("/hello")
 	public void hello(@RequestBody UserModel user) {
-		logger.info("User {}", user);
+		logger.info("Produce User: {} from {}", user.getName(), user.getAddress());
 		kafkaTemplate.send("demoTopicKafka", user);
 	}
 }
