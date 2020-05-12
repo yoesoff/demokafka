@@ -8,17 +8,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
+
 @RestController
 public class KafkaController {
 	
 	Logger logger = LoggerFactory.getLogger(KafkaController.class);
 	
 	@Autowired
-	private KafkaTemplate<String, UserModel> kafkaTemplate;
+	private KafkaTemplate<String, String> kafkaTemplate;
+	@Autowired
+	private Gson jsonConverter;
 	
 	@PostMapping("/hello")
 	public void hello(@RequestBody UserModel user) {
 		logger.info("Produce User: {} from {}", user.getName(), user.getAddress());
-		kafkaTemplate.send("demoTopicKafka", user);
+		kafkaTemplate.send("demoTopicKafka", jsonConverter.toJson(user));
 	}
 }

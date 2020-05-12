@@ -1,4 +1,4 @@
-package com.beanary.demokafka;
+package com.beanary.demokafka.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,22 +12,24 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+import com.beanary.demokafka.UserModel;
+
 @Configuration
 public class KafkaProducerConfig {
 
 	@Bean
-	public ProducerFactory<String, UserModel> 	producerFactory() {
+	public ProducerFactory<String, String> 	producerFactory() {
 		Map<String, Object> configs = new HashMap<>();
 
 		configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
 		configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+		configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
 		return new DefaultKafkaProducerFactory<>(configs);
 	}
 	
 	@Bean
-	public KafkaTemplate<String, UserModel> kafkaTemplate() {
+	public KafkaTemplate<String, String> kafkaTemplate() {
 		return new KafkaTemplate<>(producerFactory());
 	}
 }
